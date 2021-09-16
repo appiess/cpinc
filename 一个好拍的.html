@@ -1,0 +1,222 @@
+<!doctype html >
+< html >
+
+<头>
+	<元 字符集=“ utf-8 ” >
+	<元 名称="视口"内容=" initial-scale=1,maximum-scale=1,user-scalable=no,width=device-width " >
+	< title >你要我一直🍋吗</ title >
+	<链接 rel ="快捷方式图标" href =" https://raw.githubusercontent.com/we11cheng/picBed/master/20190527141351.png
+“ >
+
+	< script  src =" https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js " > </ script >
+
+	<风格>
+		html ,
+		身体{
+			宽度： 100 %；
+			高度： 100 %；
+			边距： 0；
+			填充： 0；
+			溢出：隐藏；
+		}
+
+		. 容器{
+			宽度： 100 %；
+			高度： 100 %；
+			边距： 0；
+			填充： 0；
+		}
+	</风格>
+</头>
+
+<身体>
+
+	< div  id =" nm-container " class ="容器" > </ div >
+
+	<脚本>
+		var 渲染器 =  {
+			雪计数：{
+				初始化：0 ，
+				增量: 1
+			} ,
+			BACKGROUND_COLOR：'HSL（％H，50％，％1％）' ，
+			INIT_HUE : 180 ,
+			DELTA_HUE : 0.1 ,
+
+			初始化：函数（） {
+				这个。设置参数（）；
+				这个。重构方法( ) ;
+				这个。createSnow （此。SNOW_COUNT 。INIT  * 此。countRate ， 真正的）;
+				这个。渲染（）；
+			} ,
+			设置参数：函数（） {
+				这个。$window  =  $ ( window ) ;
+
+				这个。$container  =  $ ( '#nm-container' ) ;
+				这个。宽度 = 这个。$容器。宽度( ) ;
+				这个。高度 = 这个。$容器。高度( ) ;
+				这个。中心 =  {
+					x：这个。宽度 /  2 ,
+					你：这个。高度 /  2
+				} ;
+				这个。计数率 = 这个。宽度 * 这个。高度 /  500  /  500 ;
+				这个。画布 =  $ ( '<canvas />' ) 。属性（{
+					宽度：这个。宽度,
+					身高：这个。高度
+				} ) 。appendTo ( this . $container ) 。得到（0 ）；
+				这个。上下文 = 这个。画布。getContext ( '2d' ) ;
+
+				这个。半径 = 数学。SQRT （此。中心。X  * 此。中心。X  + 此。中心。ý  * 此。中心。ÿ ）;
+				这个。色调 = 这个。INIT_HUE ;
+				这个。雪 =  [ ] ;
+			} ,
+			重建方法：函数（） {
+				这个。渲染 = 这个。渲染。绑定（这个）；
+			} ,
+			createSnow：函数（计数， toRandomize ） {
+				for  ( var  i  =  0 ;  i  < 计数;  i ++ )  {
+					这个。雪。推（新 SNOW （此。宽度， 此。高度， 此。中心， toRandomize ））;
+				}
+			} ,
+			渲染：函数（） {
+				requestAnimationFrame （此。渲染）;
+
+				var 梯度 =  this 。上下文。createRadialGradient （此。中心。X ， 此。中心。ÿ ， 0 ， 此。中心。X ， 此。中心。ý ， 此。半径），
+					背景颜色 = 这个。背景色。取代（'％H' ， 此。色调）;
+
+				梯度。addColorStop ( 0 ,  backgroundColor . replace ( '%l' ,  30 ) ) ;
+				梯度。addColorStop ( 0.2 ,  backgroundColor . replace ( '%l' ,  20 ) ) ;
+				梯度。addColorStop ( 1 ,  backgroundColor . replace ( '%l' ,  5 ) ) ;
+
+				这个。上下文。填充样式 = 渐变；
+				这个。上下文。fillRect （0 ， 0 ， 此。宽度， 此。高度）;
+
+				为 （VAR 我 = 此。雪。长度 -  1 ; 我 > =  0 ; 我- ） {
+					如果 （！此。积雪[我] 。渲染（此。上下文）） {
+						这个。雪。拼接( i ,  1 ) ;
+					}
+				}
+				这个。色调 += 这个。DELTA_HUE ;
+				这个。色调 %=  360 ;
+
+				这个。createSnow （此。SNOW_COUNT 。DELTA ， 假）;
+			}
+		} ;
+		var  SNOW  = 函数（宽度、 高度、 中心、 toRandomize ） {
+			这个。宽度 = 宽度；
+			这个。高度 = 高度；
+			这个。中心 = 中心;
+			这个。init ( toRandomize ) ;
+		} ;
+		雪。原型 =  {
+			半径: 20 ,
+			偏移量：4 ，
+			INIT_POSITION_MARGIN : 20 ,
+			颜色: 'rgba(255, 255, 255, 0.8)' ,
+			TOP_RADIUS : {
+				最小: 1 ,
+				最大：3
+			} ,
+			规模：{
+				初始化：0.2 ，
+				增量: 0.01 ,
+				最大：3
+			} ,
+			DELTA_旋转：{
+				最小值：-数学。PI  /  180  /  2 ,
+				马克斯：数学。PI  /  180  /  2
+			} ,
+			THRESHOLD_TRANSPARENCY : 2.1 ,
+			速度：{
+				最小: - 1 ,
+				最大：1
+			} ,
+			LINE_WIDTH : 2 ,
+			模糊：5 ，
+
+			初始化：函数（toRandomize ） {
+				这个。setParameters ( toRandomize ) ;
+				这个。创建雪（）；
+			} ,
+			设置参数：函数（toRandomize ） {
+				如果 （！这个。画布） {
+					这个。半径 = 这个。半径 + 这个。TOP_RADIUS 。最大 *  2  + 这个。LINE_WIDTH ;
+					这个。长度 = 这个。半径 *  2 ;
+					这个。画布 =  $ ( '<canvas />' ) 。属性（{
+						宽度：这个。长度,
+						身高：这个。长度
+					} ) 。得到（0 ）；
+					这个。上下文 = 这个。画布。getContext ( '2d' ) ;
+				}
+				这个。topRadius  = 这个。getRandomValue （此。TOP_RADIUS ）;
+
+				var  theta  = 数学。PI  *  2  * 数学。随机( ) ;
+
+				这个。x  = 这个。中心。x  + 这个。INIT_POSITION_MARGIN  * 数学。cos ( θ ) ;
+				这个。y  = 这个。中心。y  + 这个。INIT_POSITION_MARGIN  * 数学。罪（θ ）；
+				这个。vx  = 这个。getRandomValue （此。VELOCITY ）;
+				这个。vy  = 这个。getRandomValue （此。VELOCITY ）;
+
+				这个。deltaRotate  = 这个。getRandomValue （此。DELTA_ROTATE ）;
+				这个。规模 = 这个。规模。初始化；
+				这个。deltaScale  =  1  +  this 。规模。三角洲 *  500  / 数学。最大（这个。宽度， 这个。高度）；
+				这个。旋转 =  0 ;
+
+				如果 （到随机化） {
+					for  ( var  i  =  0 ,  count  =  Math . random ( )  *  1000 ;  i  <  count ;  i ++ )  {
+						这个。x  += 这个。vx ;
+						这个。y  += 这个。维;
+						这个。规模 *= 这个。deltaScale ;
+						这个。旋转 += 这个。deltaRotate ;
+					}
+				}
+			} ,
+			getRandomValue：函数（范围） {
+				返回 范围。MIN  +  （范围。MAX  - 范围。MIN ） * 数学。随机( ) ;
+			} ,
+			创建雪：函数（） {
+				这个。上下文。clearRect （0 ， 0 ， 此。长度， 此。长度）;
+
+				这个。上下文。保存( ) ;
+				这个。上下文。开始路径（）；
+				这个。上下文。翻译（这个。半径， 这个。半径）；
+				这个。上下文。shadowColor  = 这个。颜色；
+				这个。上下文。shadowBlur  = 这个。模糊;
+
+				这个。上下文。fillText ( '🍋' ,  0 ,  0 ) ;
+				这个。上下文。中风( ) ;
+				这个。上下文。恢复( ) ;
+			} ,
+			渲染：函数（上下文） {
+				上下文。保存( ) ;
+
+				如果 （此。尺度 > 此。THRESHOLD_TRANSPARENCY ） {
+					上下文。globalAlpha  = 数学。最大值（0 ， （此。SCALE 。MAX  - 此。尺度） /  （此。SCALE 。MAX  - 此。THRESHOLD_TRANSPARENCY ））;
+
+					如果 （此。尺度 > 此。SCALE 。MAX  || 此。X  <  -此。半径 || 此。X  > 此。宽度 + 此。半径 || 此。ÿ  <  -此。半径 || 此。ÿ  > 这个.高度 + 这个.半径)  {
+						上下文。恢复( ) ;
+						返回 假；
+					}
+				}
+				上下文。翻译（此。X ， 此。ÿ ）;
+				上下文。旋转（这个。旋转）；
+				上下文。规模（这个。规模， 这个。规模）；
+				上下文。的drawImage （此。帆布， -此。半径， -此。半径）;
+				上下文。恢复( ) ;
+
+				这个。x  += 这个。vx ;
+				这个。y  += 这个。维;
+				这个。规模 *= 这个。deltaScale ;
+				这个。旋转 += 这个。deltaRotate ;
+				返回 真；
+			}
+		} ;
+
+		$ (函数( )  {
+			渲染器。初始化（）；
+		} ) ;
+	</脚本>
+
+</正文>
+
+</ html >
